@@ -1,0 +1,6 @@
+pyproject.toml
+cursor_project.egg-info/PKG-INFO
+cursor_project.egg-info/SOURCES.txt
+cursor_project.egg-info/dependency_links.txt
+cursor_project.egg-info/requires.txt
+cursor_project.egg-info/top_level.txt

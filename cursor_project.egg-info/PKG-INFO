@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: cursor-project
+Version: 0.1.0
+Summary: Cursor workspace utilities
+Requires-Python: >=3.10
+Requires-Dist: langchain-core>=1.0.0
+Requires-Dist: langchain-ollama>=0.2.0
+Requires-Dist: playwright>=1.40.0

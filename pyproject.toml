@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cursor-project"
+version = "0.1.0"
+description = "Cursor workspace utilities"
+requires-python = ">=3.10"
+dependencies = [
+    "langchain-core>=1.0.0",
+    "langchain-ollama>=0.2.0",
+    "playwright>=1.40.0",
+]
+[project.scripts]
+local-ai-agent = "app:main"
+
+[tool.setuptools]
+py-modules = ["app", "web_tools"]
+[tool.setuptools.package-dir]
+"" = "local-ai-agent"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+extraPaths = ["local-ai-agent/personal-assistant"]
+
+[tool.uv.workspace]
+members = [
+    "local-ai-agent/personal-assistant",
+]
