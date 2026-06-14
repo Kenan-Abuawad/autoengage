@@ -8,9 +8,14 @@ version = "0.1.0"
 description = "Cursor workspace utilities"
 requires-python = ">=3.10"
 dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "fpdf>=1.7.2",
     "langchain-core>=1.0.0",
+    "langchain-groq>=1.1.2",
     "langchain-ollama>=0.2.0",
     "playwright>=1.40.0",
+    "python-dotenv>=1.2.2",
+    "requests>=2.32.5",
 ]
 [project.scripts]
 local-ai-agent = "app:main"
@@ -23,6 +28,19 @@ py-modules = ["app", "web_tools"]
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+executionEnvironments = [
+  { root = "local-ai-agent/personal-assistant" },
+  { root = "local-ai-agent" },
+  { root = "." },
+]
+extraPaths = ["local-ai-agent/personal-assistant"]
+
+[tool.basedpyright]
+executionEnvironments = [
+  { root = "local-ai-agent/personal-assistant" },
+  { root = "local-ai-agent" },
+  { root = "." },
+]
 extraPaths = ["local-ai-agent/personal-assistant"]
 
 [tool.uv.workspace]
