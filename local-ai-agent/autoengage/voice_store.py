@@ -4,10 +4,7 @@ voice_samples = []
 
 
 @tool
-def add_voice_sample(
-    text: str,
-    category: str
-) -> str:
+def add_voice_sample(text: str, category: str = "general") -> str:
     """
     Save writing style sample.
     """

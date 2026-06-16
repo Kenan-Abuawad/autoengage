@@ -7,6 +7,9 @@ def reddit_search_posts(
     query: str,
     limit: int = 10
 ) -> str:
+    """
+    Search Reddit posts.
+    """
     return "Reddit module skipped by instructor."
 
 
@@ -14,6 +17,9 @@ def reddit_search_posts(
 def reddit_read_post(
     post_url: str
 ) -> str:
+    """
+    Read a Reddit post.
+    """
     return "Reddit module skipped by instructor."
 
 
@@ -22,6 +28,9 @@ def reddit_post_comment(
     post_url: str,
     comment_text: str
 ) -> str:
+    """
+    Publish a Reddit comment.
+    """
     return "Reddit module skipped by instructor."
 
 
@@ -29,4 +38,7 @@ def reddit_post_comment(
 def reddit_monitor_replies(
     username: str
 ) -> str:
+    """
+    Monitor Reddit replies.
+    """
     return "Reddit module skipped by instructor."

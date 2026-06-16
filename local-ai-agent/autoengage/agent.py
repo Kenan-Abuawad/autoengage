@@ -5,7 +5,7 @@ from langchain_core.messages import (
     ToolMessage
 )
 
-from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq
 
 from brand_profile import BRAND
 
@@ -132,12 +132,18 @@ tool_map = {
 
 
 def main():
+    import os
+    from dotenv import load_dotenv
+    from pydantic import SecretStr
 
-    llm = ChatOllama(
-        model="qwen3:8b",
-        temperature=0
+    load_dotenv()
+    api_key = os.getenv("GROQ_API_KEY")
+
+    llm = ChatGroq(
+        model="llama-3.1-8b-instant",
+        temperature=0,
+        api_key=SecretStr(api_key) if api_key else None,
     )
-
     llm_with_tools = llm.bind_tools(tools)
 
     system_prompt = f"""
@@ -151,15 +157,15 @@ Audience: {BRAND['target_audience']}
 Value: {BRAND['unique_value']}
 Website: {BRAND['website']}
 
-Workflow:
-discover
-read
-score
-draft
-qa
-voice
-post
-track
+Workflow steps (use tools only):
+1. search_viral_posts
+2. read_post_content
+3. score_relevance
+4. generate_post_ideas
+5. write_post
+6. qa tools
+7. add_voice_sample / find_similar_voice
+8. publish logic handled externally
 
 Rules:
 1. Value first.
@@ -199,9 +205,18 @@ comments or external content.
             HumanMessage(content=user_input)
         )
 
-        response = llm_with_tools.invoke(messages)
+        if len(messages) > 20:
+           messages = [messages[0]] + messages[-19:]
 
-        print("\nAgent Thought:")
+        try:
+            response = llm_with_tools.invoke(messages)
+
+        except Exception as e:
+           print("\nModel Error:")
+           print(str(e))
+           continue
+
+       
         print(response.content)
 
         tool_calls = getattr(
@@ -230,10 +245,7 @@ comments or external content.
                 f"\n🔧 Tool Selected: {tool_name}"
             )
 
-            matched_tool = next(
-                t for t in tools
-                if t.name == tool_name
-            )
+            matched_tool = tool_map[tool_name]
 
             result = matched_tool.invoke(tool_args)
 
@@ -248,15 +260,22 @@ comments or external content.
                 )
             )
 
-        final_response = llm_with_tools.invoke(
-            messages
-        )
 
-        print(
-            f"\n Agent:\n{final_response.content}\n"
-        )
+        try:
 
-        messages.append(final_response)
+              final_response = llm_with_tools.invoke(
+                  messages
+               ) 
+
+              print(
+                 f"\nAgent:\n{final_response.content}\n"
+              )
+        except Exception as e:
+
+                 print("\nAgent Response Generation Failed:")
+                 print(str(e))
+                 print("\nTool executed successfully.")
+               
 
 
 if __name__ == "__main__":
